@@ -1,17 +1,103 @@
 import Button from "@/components/Button";
-import { FaArrowUpRightFromSquare } from "react-icons/fa6";
-import { FaArrowRight, FaGithub } from "react-icons/fa";
+import {
+  FaArrowUpRightFromSquare,
+  FaGithub,
+  FaInstagram,
+  FaLinkedin,
+  FaGoodreads,
+} from "react-icons/fa6";
+import { FaArrowRight } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
 import Form from "@/components/Form";
 import InlineLink from "@/components/InlineLink";
+import { getDictionary } from "./dictionaries";
+import { Locale } from "@/i18n-config";
 
-export default function Home() {
+export default async function Home({
+  params: { lang },
+}: {
+  params: { lang: Locale };
+}) {
+  // @ts-ignore
+  const dict = await getDictionary(lang);
+  console.log(dict);
+
   const timelineDotBefore =
     "before:bg-background before:absolute before:top-[50%] before:left-0 before:w-[25px] before:aspect-square before:rounded-full before:translate-y-[-50%] before:translate-x-[calc(-16px-50%)]";
 
   const timelineDotAfter =
     "after:bg-body after:absolute after:top-[50%] after:left-0 after:w-[12px] after:aspect-square after:rounded-full after:translate-y-[-50%] after:translate-x-[calc(-16px-50%)]";
+
+  const experiences = [
+    {
+      date: "2023 - today",
+      title: "Private tutor",
+      description:
+        "I started working as a private tutor for students in math, physics and programming. I have a passion for teaching and helping others understand complex topics.",
+      link: "https://www.svendsen-realfag.no/",
+    },
+    {
+      date: "March 2024",
+      title: "Highschool website",
+      description:
+        "I made a website for my school Lillestrøm Videregående Skole (Norway). Each year my school hosts a roleplay that replicates the parliamentary elections in Norway. I volunteered to make a website for them.",
+      link: "https://snileposten.vercel.app/",
+    },
+    {
+      date: "February 2024",
+      title: "Private tutor website",
+      description:
+        "I made a website for my private tutoring business. I wanted to make it easier for students to find me and book lessons. I also wanted to showcase my skills as a developer. I used Next.js and Tailwind CSS to build the website. I also used Figma to design the website. I deployed the website with Vercel.",
+      link: "https://etos-realfag.vercel.app/",
+    },
+  ];
+
+  const projects = [
+    {
+      title: "Sushi restaurant website",
+      description:
+        "I made a website for a local sushi restaurant in Lillestrøm. I wanted to challenge myself, so I used 3D animations and WebGL to create a unique and immersive experience",
+      link: "https://moshi-moshi-sushii.vercel.app/",
+      github: "https://github.com/aParr0t/moshi-moshi-sushi",
+      image: "/static/images/moshi-moshi-sushi.png",
+    },
+    {
+      title: "Highschool website",
+      description:
+        "I made a website for my school Lillestrøm Videregående Skole (Norway). Each year my school hosts a roleplay that replicates the parliamentary elections in Norway. I volunteered to make a website for them.",
+      link: "https://snileposten.vercel.app/",
+      github: "https://github.com/aParr0t/snileposten",
+      image: "/static/images/snileposten.png",
+    },
+    {
+      title: "Private tutor website",
+      description:
+        "I made a website for my private tutoring business. I wanted to make it easier for students to find me and book lessons. I also wanted to showcase my skills as a developer. I used Next.js and Tailwind CSS to build the website. I also used Figma to design the website. I deployed the website with Vercel.",
+      link: "https://etos-realfag.vercel.app/",
+      github: "https://github.com/aParr0t/etos-realfag",
+      image: "/static/images/etos-realfag.png",
+    },
+  ];
+
+  const socials = [
+    {
+      link: "https://github.com/aParr0t",
+      icon: FaGithub,
+    },
+    {
+      link: "https://www.instagram.com/atas_lapenas/",
+      icon: FaInstagram,
+    },
+    {
+      link: "https://www.linkedin.com/in/atas2005/",
+      icon: FaLinkedin,
+    },
+    {
+      link: "https://www.goodreads.com/user/show/154680072-aparrot",
+      icon: FaGoodreads,
+    },
+  ];
 
   return (
     <>
@@ -22,10 +108,7 @@ export default function Home() {
               Atas Lapenas <br />-{" "}
               <span className="font-handwriting font-light">le developer</span>
             </h1>
-            <p>
-              Passionate about crafting seamless user experiences and
-              pixel-perfect designs.
-            </p>
+            <p>{dict.hero.text}</p>
             <div className="flex flex-row">
               <Link href="#contact">
                 <Button>Hire me</Button>
@@ -48,25 +131,21 @@ export default function Home() {
             Relevant experience
           </h2>
           <div className="flex flex-col gap-12 border-l-2 border-body pl-4 py-4">
-            {Array.from({ length: 3 }).map((_, index) => (
+            {experiences.map((experience, index) => (
               <div key={index} className="flex flex-col gap-2">
                 <div className="relative">
                   <p
-                    className={`underline decoration-accent decoration-4 font-monospace ${timelineDotBefore} ${timelineDotAfter}`}
+                    className={`font-monospace ${timelineDotBefore} ${timelineDotAfter}`}
                   >
-                    2021 - 2022
+                    {experience.date}
                   </p>
                 </div>
                 <p className="text-secondary font-bold text-xl font-monospace">
-                  Frontend developer
+                  {experience.title}
                 </p>
-                <p>
-                  I worked at a startup where I built and designed the frontend
-                  for their web application. I also optimized the website for
-                  performance and SEO.
-                </p>
+                <p>{experience.description}</p>
                 <div className="flex flex-row">
-                  <Link href="#">
+                  <Link href={experience.link} target="_blank">
                     <Button
                       variant="outlined"
                       className="whitespace-nowrap flex flex-row items-center gap-2 border-body/50"
@@ -80,6 +159,7 @@ export default function Home() {
           </div>
           <Link
             href="#"
+            target="_blank"
             className="text-secondary text-md flex flex-row self-center items-center gap-2 mt-4"
           >
             View Full Résumé <FaArrowUpRightFromSquare className="" />
@@ -100,10 +180,10 @@ export default function Home() {
             </p>
           </div>
           <div className="flex flex-col gap-14">
-            {Array.from({ length: 3 }).map((_, index) => (
+            {projects.map((project, index) => (
               <div key={index} className="relative flex flex-col gap-6">
                 <Image
-                  src="https://placehold.co/600x400/png"
+                  src={project.image || "https://placehold.co/600x400/png"}
                   alt="Project"
                   width={1000}
                   height={800}
@@ -111,21 +191,20 @@ export default function Home() {
                 />
                 <div className="flex flex-col">
                   <h3 className="text-secondary font-bold text-xl font-monospace">
-                    Project name
+                    {project.title}
                   </h3>
-                  <p className="mt-2 mb-4">
-                    A brief description of the project. It should be short and
-                    sweet, but also informative.
-                  </p>
+                  <p className="mt-2 mb-4">{project.description}</p>
                   <div className="flex flex-row gap-4">
                     <Link
-                      href="#"
+                      href={project.link}
+                      target="_blank"
                       className="flex flex-row items-center gap-2 outline outline-1 py-3 px-4"
                     >
                       View project <FaArrowRight className="" />
                     </Link>
                     <Link
-                      href="#"
+                      href={project.github}
+                      target="_blank"
                       className="flex flex-row items-center gap-2 outline outline-1 py-3 px-4"
                     >
                       View code <FaGithub size={24} />
@@ -142,19 +221,28 @@ export default function Home() {
             View all projects
           </Button>
         </section>
-        <section id="contact">
+        <section id="contact" className="py-16 flex flex-col">
           <p className="text-center text-secondary font-monospace mb-3">
             Get in touch
           </p>
           <h2 className="text-primary font-bold text-3xl text-center mb-5">
             Contact me
           </h2>
-          <p className="text-center">Leave a message</p>
+          <ul className="flex flex-row self-center gap-3">
+            {socials.map((social, index) => (
+              <li key={index} className="flex flex-row gap-4">
+                <Link href={social.link} target="_blank">
+                  <social.icon size={36} />
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <p className="text-center mt-6">... or leave a message</p>
           <Form />
         </section>
       </main>
       <footer className="flex flex-col p-4">
-        <h3 className="text-secondary font-monospace mb-3">Links</h3>
+        <h3 className="text-secondary font-monospace mb-2">Links</h3>
         <ul>
           <li>
             <Link href="#">Home</Link>
@@ -172,12 +260,23 @@ export default function Home() {
             <Link href="#">Contact</Link>
           </li>
         </ul>
+        <h3 className="text-secondary font-monospace mt-3 mb-2">Socials</h3>
+        <ul className="flex flex-row gap-3">
+          {socials.map((social, index) => (
+            <li key={index} className="flex flex-row gap-4">
+              <Link href={social.link} target="_blank">
+                <social.icon size={36} />
+              </Link>
+            </li>
+          ))}
+        </ul>
+
         <p className="mt-8">
           I designed this website with{" "}
           <InlineLink href="https://www.relume.io/">Relume</InlineLink> and{" "}
-          <InlineLink href="https://www.figma.com/">Figma</InlineLink>. It was
-          built with <InlineLink href="https://nextjs.org/">Next.js</InlineLink>{" "}
-          and styled with{" "}
+          <InlineLink href="https://www.figma.com/">Figma</InlineLink>. To build
+          it, I used <InlineLink href="https://nextjs.org/">Next.js</InlineLink>{" "}
+          combined with{" "}
           <InlineLink href="https://tailwindcss.com/">Tailwind CSS</InlineLink>.
           Website deployed with{" "}
           <InlineLink href="https://vercel.com/">Vercel</InlineLink>.

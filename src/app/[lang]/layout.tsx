@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import { Inter, Space_Mono, Pacifico } from "next/font/google";
-import "./globals.css";
+import "@/app/globals.css";
+import { i18n, type Locale } from "../../i18n-config";
+
+export async function generateStaticParams() {
+  return i18n.locales.map((locale) => ({ lang: locale }));
+}
 
 const inter = Inter({ subsets: ["latin"] });
 const spaceMono = Space_Mono({
@@ -21,11 +26,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  params,
 }: Readonly<{
   children: React.ReactNode;
+  params: { lang: Locale };
 }>) {
   return (
-    <html lang="en">
+    <html lang={params.lang}>
       <body
         className={`${inter.className} ${spaceMono.variable} ${pacifico.variable}`}
       >

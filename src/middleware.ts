@@ -1,9 +1,8 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-import { i18n } from "./src/i18n-config";
+import { i18n, matchLocale } from "./i18n-config";
 
-import { match as matchLocale } from "@formatjs/intl-localematcher";
 import Negotiator from "negotiator";
 
 function getLocale(request: NextRequest): string | undefined {
@@ -19,7 +18,7 @@ function getLocale(request: NextRequest): string | undefined {
     locales
   );
 
-  const locale = matchLocale(languages, locales, i18n.defaultLocale);
+  const locale = matchLocale(languages);
 
   return locale;
 }
@@ -27,16 +26,11 @@ function getLocale(request: NextRequest): string | undefined {
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
-  // // `/_next/` and `/api/` are ignored by the watcher, but we need to ignore files in `public` manually.
-  // // If you have one
-  // if (
-  //   [
-  //     '/manifest.json',
-  //     '/favicon.ico',
-  //     // Your other files in `public`
-  //   ].includes(pathname)
-  // )
-  //   return
+  // prevent static files from being redirected to a locale
+  let staticPaths = ["/manifest.json", "/favicon.ico", "/static/"];
+  if (staticPaths.some((file) => pathname.startsWith(file))) {
+    return;
+  }
 
   // Check if there is any supported locale in the pathname
   const pathnameIsMissingLocale = i18n.locales.every(

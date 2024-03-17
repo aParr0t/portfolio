@@ -12,7 +12,8 @@ import Image from "next/image";
 import Form from "@/components/Form";
 import InlineLink from "@/components/InlineLink";
 import { getDictionary } from "./dictionaries";
-import { Locale } from "@/i18n-config";
+import { Locale, matchLocale } from "@/i18n-config";
+import { link } from "fs";
 
 export default async function Home({
   params: { lang },
@@ -21,64 +22,12 @@ export default async function Home({
 }) {
   // @ts-ignore
   const dict = await getDictionary(lang);
-  console.log(dict);
 
   const timelineDotBefore =
     "before:bg-background before:absolute before:top-[50%] before:left-0 before:w-[25px] before:aspect-square before:rounded-full before:translate-y-[-50%] before:translate-x-[calc(-16px-50%)]";
 
   const timelineDotAfter =
     "after:bg-body after:absolute after:top-[50%] after:left-0 after:w-[12px] after:aspect-square after:rounded-full after:translate-y-[-50%] after:translate-x-[calc(-16px-50%)]";
-
-  const experiences = [
-    {
-      date: "2023 - today",
-      title: "Private tutor",
-      description:
-        "I started working as a private tutor for students in math, physics and programming. I have a passion for teaching and helping others understand complex topics.",
-      link: "https://www.svendsen-realfag.no/",
-    },
-    {
-      date: "March 2024",
-      title: "Highschool website",
-      description:
-        "I made a website for my school Lillestrøm Videregående Skole (Norway). Each year my school hosts a roleplay that replicates the parliamentary elections in Norway. I volunteered to make a website for them.",
-      link: "https://snileposten.vercel.app/",
-    },
-    {
-      date: "February 2024",
-      title: "Private tutor website",
-      description:
-        "I made a website for my private tutoring business. I wanted to make it easier for students to find me and book lessons. I also wanted to showcase my skills as a developer. I used Next.js and Tailwind CSS to build the website. I also used Figma to design the website. I deployed the website with Vercel.",
-      link: "https://etos-realfag.vercel.app/",
-    },
-  ];
-
-  const projects = [
-    {
-      title: "Sushi restaurant website",
-      description:
-        "I made a website for a local sushi restaurant in Lillestrøm. I wanted to challenge myself, so I used 3D animations and WebGL to create a unique and immersive experience",
-      link: "https://moshi-moshi-sushii.vercel.app/",
-      github: "https://github.com/aParr0t/moshi-moshi-sushi",
-      image: "/static/images/moshi-moshi-sushi.png",
-    },
-    {
-      title: "Highschool website",
-      description:
-        "I made a website for my school Lillestrøm Videregående Skole (Norway). Each year my school hosts a roleplay that replicates the parliamentary elections in Norway. I volunteered to make a website for them.",
-      link: "https://snileposten.vercel.app/",
-      github: "https://github.com/aParr0t/snileposten",
-      image: "/static/images/snileposten.png",
-    },
-    {
-      title: "Private tutor website",
-      description:
-        "I made a website for my private tutoring business. I wanted to make it easier for students to find me and book lessons. I also wanted to showcase my skills as a developer. I used Next.js and Tailwind CSS to build the website. I also used Figma to design the website. I deployed the website with Vercel.",
-      link: "https://etos-realfag.vercel.app/",
-      github: "https://github.com/aParr0t/etos-realfag",
-      image: "/static/images/etos-realfag.png",
-    },
-  ];
 
   const socials = [
     {
@@ -99,6 +48,9 @@ export default async function Home({
     },
   ];
 
+  // const resumeLang = matchLocale([lang]) === "no" ? "no" : "en";
+  const resumeLang = "no";
+
   return (
     <>
       <main className="flex min-h-screen flex-col items-center justify-between p-4">
@@ -111,27 +63,23 @@ export default async function Home({
             <p>{dict.hero.text}</p>
             <div className="flex flex-row">
               <Link href="#contact">
-                <Button>Hire me</Button>
+                <Button>{dict.cta.button}</Button>
               </Link>
             </div>
           </div>
         </section>
         <section id="about" className="py-16">
           <h2 className="text-primary font-bold text-3xl text-center mb-5">
-            About
+            {dict.about.title}
           </h2>
-          <p>
-            I&apos;m a web developer and designer based in Indonesia. I
-            specialize in building and designing websites and applications with
-            a focus on user experience and performance.
-          </p>
+          <p>{dict.about.text}</p>
         </section>
         <section id="experience" className="py-16 flex flex-col">
           <h2 className="text-primary font-bold text-3xl text-center mb-5">
-            Relevant experience
+            {dict.experience.title}
           </h2>
           <div className="flex flex-col gap-12 border-l-2 border-body pl-4 py-4">
-            {experiences.map((experience, index) => (
+            {dict.experience.jobs.map((experience, index) => (
               <div key={index} className="flex flex-col gap-2">
                 <div className="relative">
                   <p
@@ -150,7 +98,8 @@ export default async function Home({
                       variant="outlined"
                       className="whitespace-nowrap flex flex-row items-center gap-2 border-body/50"
                     >
-                      Learn more <FaArrowUpRightFromSquare className="" />
+                      {dict.experience.learnMore}{" "}
+                      <FaArrowUpRightFromSquare className="" />
                     </Button>
                   </Link>
                 </div>
@@ -158,11 +107,11 @@ export default async function Home({
             ))}
           </div>
           <Link
-            href="#"
+            href={`/static/docs/resume-${resumeLang}.pdf`}
             target="_blank"
             className="text-secondary text-md flex flex-row self-center items-center gap-2 mt-4"
           >
-            View Full Résumé <FaArrowUpRightFromSquare className="" />
+            {dict.experience.resume} <FaArrowUpRightFromSquare className="" />
           </Link>
         </section>
         <section className="py-16 flex flex-col gap-12">
@@ -180,7 +129,7 @@ export default async function Home({
             </p>
           </div>
           <div className="flex flex-col gap-14">
-            {projects.map((project, index) => (
+            {dict.projects.projects.map((project, index) => (
               <div key={index} className="relative flex flex-col gap-6">
                 <Image
                   src={project.image || "https://placehold.co/600x400/png"}
@@ -200,14 +149,15 @@ export default async function Home({
                       target="_blank"
                       className="flex flex-row items-center gap-2 outline outline-1 py-3 px-4"
                     >
-                      View project <FaArrowRight className="" />
+                      {dict.projects.visitButtonText}
+                      <FaArrowRight className="" />
                     </Link>
                     <Link
                       href={project.github}
                       target="_blank"
                       className="flex flex-row items-center gap-2 outline outline-1 py-3 px-4"
                     >
-                      View code <FaGithub size={24} />
+                      {dict.projects.codeButtonText} <FaGithub size={24} />
                     </Link>
                   </div>
                 </div>
@@ -218,15 +168,15 @@ export default async function Home({
             variant="outlined"
             className="border-body w-min whitespace-nowrap self-center"
           >
-            View all projects
+            {dict.projects.allProjectsButtonText}
           </Button>
         </section>
         <section id="contact" className="py-16 flex flex-col">
           <p className="text-center text-secondary font-monospace mb-3">
-            Get in touch
+            {dict.contact.subTitle}
           </p>
           <h2 className="text-primary font-bold text-3xl text-center mb-5">
-            Contact me
+            {dict.contact.title}
           </h2>
           <ul className="flex flex-row self-center gap-3">
             {socials.map((social, index) => (
@@ -237,30 +187,22 @@ export default async function Home({
               </li>
             ))}
           </ul>
-          <p className="text-center mt-6">... or leave a message</p>
-          <Form />
+          <p className="text-center mt-6">{dict.contact.text}</p>
+          <Form i18n={dict.contact.form} />
         </section>
       </main>
       <footer className="flex flex-col p-4">
-        <h3 className="text-secondary font-monospace mb-2">Links</h3>
+        <h3 className="text-secondary font-monospace mb-2">
+          {dict.footer.linkTitle}
+        </h3>
         <ul>
-          <li>
-            <Link href="#">Home</Link>
-          </li>
-          <li>
-            <Link href="#">About</Link>
-          </li>
-          <li>
-            <Link href="#">Experience</Link>
-          </li>
-          <li>
-            <Link href="#">Projects</Link>
-          </li>
-          <li>
-            <Link href="#">Contact</Link>
-          </li>
+          {Object.values(dict.footer.links).map((_link, index) => (
+            <li key={index}>{_link.text}</li>
+          ))}
         </ul>
-        <h3 className="text-secondary font-monospace mt-3 mb-2">Socials</h3>
+        <h3 className="text-secondary font-monospace mt-3 mb-2">
+          {dict.footer.socialsTitle}
+        </h3>
         <ul className="flex flex-row gap-3">
           {socials.map((social, index) => (
             <li key={index} className="flex flex-row gap-4">
@@ -270,17 +212,7 @@ export default async function Home({
             </li>
           ))}
         </ul>
-
-        <p className="mt-8">
-          I designed this website with{" "}
-          <InlineLink href="https://www.relume.io/">Relume</InlineLink> and{" "}
-          <InlineLink href="https://www.figma.com/">Figma</InlineLink>. To build
-          it, I used <InlineLink href="https://nextjs.org/">Next.js</InlineLink>{" "}
-          combined with{" "}
-          <InlineLink href="https://tailwindcss.com/">Tailwind CSS</InlineLink>.
-          Website deployed with{" "}
-          <InlineLink href="https://vercel.com/">Vercel</InlineLink>.
-        </p>
+        {dict.footer.aboutWebsite}
       </footer>
     </>
   );

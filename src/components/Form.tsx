@@ -2,7 +2,15 @@
 import { useForm } from "react-hook-form";
 import Button from "@/components/Button";
 
-export default function Form() {
+type Props = {
+  i18n: {
+    name: string;
+    email: string;
+    message: string;
+  };
+};
+
+export default function Form({ i18n }: Props) {
   const {
     handleSubmit,
     register,
@@ -18,10 +26,10 @@ export default function Form() {
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="flex flex-col gap-2">
-        <label htmlFor="name">Name</label>
+        <label htmlFor="name">{i18n.name}</label>
         <input
           id="name"
-          placeholder="Your name"
+          placeholder={i18n.name}
           type="text"
           className="py-3 px-4 outline outline-1"
           {...register("name", {
@@ -30,10 +38,10 @@ export default function Form() {
         />
       </div>
       <div className="flex flex-col gap-2">
-        <label htmlFor="email">Email</label>
+        <label htmlFor="email">{i18n.email}</label>
         <input
           id="email"
-          placeholder="Your email"
+          placeholder={i18n.email}
           type="email"
           className="py-3 px-4 outline outline-1"
           {...register("email", {
@@ -46,11 +54,11 @@ export default function Form() {
         />
       </div>
       <div className="flex flex-col gap-2">
-        <label htmlFor="message">Message</label>
+        <label htmlFor="message">{i18n.message}</label>
         <textarea
           id="message"
           name="message"
-          placeholder="Your message"
+          placeholder={i18n.message}
           className="py-3 px-4 outline outline-1"
           rows={4}
         />

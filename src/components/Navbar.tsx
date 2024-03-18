@@ -37,7 +37,7 @@ export default function Navbar({ lang, className }: Props) {
   }
 
   return (
-    <div className={`flex flex-row gap-8 ml-auto ${className}`}>
+    <div className={`flex flex-row gap-8 ml-auto ${className} max-w-[30ch]`}>
       <Select defaultValue={lang} onValueChange={onChange}>
         <SelectTrigger>
           <SelectValue>

@@ -35,7 +35,7 @@ export default function RootLayout({
   return (
     <html lang={params.lang}>
       <body
-        className={`${inter.className} ${spaceMono.variable} ${pacifico.variable}`}
+        className={`${inter.className} ${spaceMono.variable} ${pacifico.variable} min-w-full`}
       >
         {children}
         <Toaster />

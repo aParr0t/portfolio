@@ -9,6 +9,7 @@ type Props = {
     email: string;
     message: string;
   };
+  className?: string;
 };
 
 interface UseFormInputs {
@@ -17,7 +18,7 @@ interface UseFormInputs {
   message: string;
 }
 
-export default function Form({ i18n }: Props) {
+export default function Form({ i18n, className }: Props) {
   const { toast } = useToast();
   const {
     handleSubmit,
@@ -60,7 +61,7 @@ export default function Form({ i18n }: Props) {
 
   return (
     <form
-      className="flex flex-col gap-6 mt-6"
+      className={`flex flex-col gap-6 mt-6 ${className}`}
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="flex flex-col gap-2">

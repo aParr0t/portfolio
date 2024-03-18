@@ -26,7 +26,7 @@ export default async function Home({
     "before:bg-background before:absolute before:top-[50%] before:left-0 before:w-[25px] before:aspect-square before:rounded-full before:translate-y-[-50%] before:translate-x-[calc(-16px-50%)]";
 
   const timelineDotAfter =
-    "after:bg-body after:absolute after:top-[50%] after:left-0 after:w-[12px] after:aspect-square after:rounded-full after:translate-y-[-50%] after:translate-x-[calc(-16px-50%)]";
+    "after:bg-foreground after:absolute after:top-[50%] after:left-0 after:w-[12px] after:aspect-square after:rounded-full after:translate-y-[-50%] after:translate-x-[calc(-16px-50%)]";
 
   const socials = [
     {
@@ -52,15 +52,18 @@ export default async function Home({
 
   return (
     <>
-      <main className="flex min-h-screen flex-col items-center justify-between p-4">
-        <section id="hero" className="flex flex-col pb-16 h-screen">
+      <main className="flex min-h-screen flex-col items-center justify-between p-4 max-w-[90ch] mx-auto">
+        <section
+          id="hero"
+          className="flex flex-col pb-16 h-screen w-full max-w-[70ch]"
+        >
           <Navbar lang={lang} />
           <div className="flex flex-col gap-8 mt-auto">
             <h1 className="text-primary font-bold text-5xl">
               Atas Lapenas <br />-{" "}
               <span className="font-handwriting font-light">le developer</span>
             </h1>
-            <p>{dict.hero.text}</p>
+            <p className="max-w-[30ch]">{dict.hero.text}</p>
             <div className="flex flex-row">
               <Link href="#contact">
                 <Button>{dict.cta.button}</Button>
@@ -72,13 +75,13 @@ export default async function Home({
           <h2 className="text-primary font-bold text-3xl text-center mb-5">
             {dict.about.title}
           </h2>
-          <p>{dict.about.text}</p>
+          <p className="max-w-[60ch]">{dict.about.text}</p>
         </section>
-        <section id="experience" className="py-16 flex flex-col">
+        <section id="experience" className="py-16 flex flex-col max-w-[60ch]">
           <h2 className="text-primary font-bold text-3xl text-center mb-5">
             {dict.experience.title}
           </h2>
-          <div className="flex flex-col gap-12 border-l-2 border-body pl-4 py-4">
+          <div className="flex flex-col gap-12 border-l-2 border-foreground pl-4 py-4">
             {dict.experience.jobs.map((experience, index) => (
               <div key={index} className="flex flex-col gap-2">
                 <div className="relative">
@@ -138,7 +141,9 @@ export default async function Home({
                   <h3 className="text-secondary font-bold text-xl font-monospace">
                     {project.title}
                   </h3>
-                  <p className="mt-2 mb-4">{project.description}</p>
+                  <p className="mt-2 mb-4 max-w-[60ch]">
+                    {project.description}
+                  </p>
                   <div className="flex flex-row gap-4">
                     <Link
                       href={project.link}
@@ -167,7 +172,7 @@ export default async function Home({
             {dict.projects.allProjectsButtonText}
           </Button>
         </section>
-        <section id="contact" className="py-16 flex flex-col">
+        <section id="contact" className="py-16 flex flex-col w-full">
           <p className="text-center text-secondary font-monospace mb-3">
             {dict.contact.subTitle}
           </p>
@@ -184,31 +189,36 @@ export default async function Home({
             ))}
           </ul>
           <p className="text-center mt-6">{dict.contact.text}</p>
-          <Form i18n={dict.contact.form} />
+          <Form
+            i18n={dict.contact.form}
+            className="w-full max-w-[60ch] px-4 mx-auto"
+          />
         </section>
       </main>
-      <footer className="flex flex-col p-4">
-        <h3 className="text-secondary font-monospace mb-2">
-          {dict.footer.linkTitle}
-        </h3>
-        <ul>
-          {Object.values(dict.footer.links).map((_link, index) => (
-            <li key={index}>{_link.text}</li>
-          ))}
-        </ul>
-        <h3 className="text-secondary font-monospace mt-3 mb-2">
-          {dict.footer.socialsTitle}
-        </h3>
-        <ul className="flex flex-row gap-3">
-          {socials.map((social, index) => (
-            <li key={index} className="flex flex-row gap-4">
-              <Link href={social.link} target="_blank">
-                <social.icon size={36} />
-              </Link>
-            </li>
-          ))}
-        </ul>
-        {dict.footer.aboutWebsite}
+      <footer className="flex flex-col md:flex-row gap-6 p-4 justify-center max-w-[90ch] mx-auto">
+        <div>
+          <h3 className="text-secondary font-monospace mb-2">
+            {dict.footer.linkTitle}
+          </h3>
+          <ul>
+            {Object.values(dict.footer.links).map((_link, index) => (
+              <li key={index}>{_link.text}</li>
+            ))}
+          </ul>
+          <h3 className="text-secondary font-monospace mt-3 mb-2">
+            {dict.footer.socialsTitle}
+          </h3>
+          <ul className="flex flex-row gap-3">
+            {socials.map((social, index) => (
+              <li key={index} className="flex flex-row gap-4">
+                <Link href={social.link} target="_blank">
+                  <social.icon size={36} />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="max-w-[50ch]">{dict.footer.aboutWebsite}</div>
       </footer>
     </>
   );

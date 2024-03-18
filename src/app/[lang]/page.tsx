@@ -61,7 +61,7 @@ export default async function Home({
           <div className="flex flex-col gap-8 mt-auto">
             <h1 className="text-primary font-bold text-5xl">
               Atas Lapenas <br />-{" "}
-              <span className="font-handwriting font-light">le developer</span>
+              <span className="font-handwriting font-light">Le developer</span>
             </h1>
             <p className="max-w-[30ch]">{dict.hero.text}</p>
             <div className="flex flex-row">

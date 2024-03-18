@@ -1,6 +1,7 @@
 "use client";
 import { useForm } from "react-hook-form";
 import Button from "@/components/Button";
+import { useToast } from "@/components/ui/use-toast";
 
 type Props = {
   i18n: {
@@ -10,14 +11,51 @@ type Props = {
   };
 };
 
+interface UseFormInputs {
+  name: string;
+  email: string;
+  message: string;
+}
+
 export default function Form({ i18n }: Props) {
+  const { toast } = useToast();
   const {
     handleSubmit,
     register,
+    reset,
     formState: { errors },
-  } = useForm();
-  function onSubmit(data: any) {
-    console.log(data);
+  } = useForm<UseFormInputs>();
+
+  async function onSubmit(data: any) {
+    // Call the backend endpoint instead of SES directly
+    fetch("/api/sendEmail", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        replyToEmail: data.email,
+        sourceEmail: "mail@ataslapenas.no",
+        toEmail: "mail@ataslapenas.no",
+        message: data.message,
+        subject: `${data.name} sent you a message`,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        toast({
+          title: "Email sent! 📬",
+          description: "We will get back to you as soon as possible.",
+        });
+        reset();
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        toast({
+          title: "Error sending email 😢",
+          description: "Please try again later.",
+        });
+      });
   }
 
   return (
@@ -57,10 +95,12 @@ export default function Form({ i18n }: Props) {
         <label htmlFor="message">{i18n.message}</label>
         <textarea
           id="message"
-          name="message"
           placeholder={i18n.message}
           className="py-3 px-4 outline outline-1"
           rows={4}
+          {...register("message", {
+            required: "Required",
+          })}
         />
       </div>
       <Button className="w-min self-center">Send</Button>

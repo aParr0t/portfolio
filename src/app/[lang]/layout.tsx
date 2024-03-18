@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Space_Mono, Pacifico } from "next/font/google";
 import "@/app/globals.css";
 import { i18n, type Locale } from "../../i18n-config";
+import { Toaster } from "@/components/ui/toaster";
 
 export async function generateStaticParams() {
   return i18n.locales.map((locale) => ({ lang: locale }));
@@ -37,6 +38,7 @@ export default function RootLayout({
         className={`${inter.className} ${spaceMono.variable} ${pacifico.variable}`}
       >
         {children}
+        <Toaster />
       </body>
     </html>
   );

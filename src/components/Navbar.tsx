@@ -15,9 +15,10 @@ import { useRouter, usePathname } from "next/navigation";
 
 type Props = {
   lang: Locale;
+  className?: string;
 };
 
-export default function Navbar({ lang }: Props) {
+export default function Navbar({ lang, className }: Props) {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -36,7 +37,7 @@ export default function Navbar({ lang }: Props) {
   }
 
   return (
-    <div className="flex flex-row gap-8 w-full">
+    <div className={`flex flex-row gap-8 ml-auto ${className}`}>
       <Select defaultValue={lang} onValueChange={onChange}>
         <SelectTrigger>
           <SelectValue>
@@ -49,12 +50,14 @@ export default function Navbar({ lang }: Props) {
         <SelectContent>
           <SelectGroup>
             {i18n.locales.map((locale) => (
-              <SelectItem key={locale.code} value={locale.code}>
+              <SelectItem
+                key={locale.code}
+                value={locale.code}
+                className="!bg-white"
+              >
                 {locale.nativeName}
               </SelectItem>
             ))}
-            {/* <SelectItem value="no">Norsk</SelectItem>
-            <SelectItem value="en">English</SelectItem> */}
           </SelectGroup>
         </SelectContent>
       </Select>

@@ -42,6 +42,7 @@ const no = {
   projects: {
     subTitle: "Prosjekter",
     title: "Mine beste prosjekter",
+    text: "Her er noen av prosjektene jeg er mest stolt av. Jeg bygde disse prosjektene fra bunnen av, fra det innledende designet til den endelige implementeringen.",
     visitButtonText: "Besøk nettstedet",
     codeButtonText: "Vis kode",
     allProjectsButtonText: "Vis alle prosjekter",

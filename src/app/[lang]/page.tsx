@@ -117,16 +117,12 @@ export default async function Home({
         <section className="py-16 flex flex-col gap-12">
           <div>
             <p className="text-center text-secondary font-monospace mb-3">
-              Projects
+              {dict.projects.subTitle}
             </p>
             <h2 className="text-primary font-bold text-3xl text-center mb-5">
-              My Best Projects
+              {dict.projects.title}
             </h2>
-            <p className="mb-">
-              Here are some of the projects I&apos;m most proud of. I built
-              these projects from the ground up, from the initial design to the
-              final implementation.
-            </p>
+            <p className="mb-">{dict.projects.text}</p>
           </div>
           <div className="flex flex-col gap-14">
             {dict.projects.projects.map((project, index) => (

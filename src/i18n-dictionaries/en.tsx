@@ -42,6 +42,7 @@ const en = {
   projects: {
     subTitle: "Projects",
     title: "My best projects",
+    text: "Here are some of the projects I'm most proud of. I built these projects from the ground up, from the initial design to the final implementation.",
     visitButtonText: "Visit website",
     codeButtonText: "View code",
     allProjectsButtonText: "View all projects",

@@ -10,10 +10,9 @@ import { FaArrowRight } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
 import Form from "@/components/Form";
-import InlineLink from "@/components/InlineLink";
 import { getDictionary } from "./dictionaries";
 import { Locale, matchLocale } from "@/i18n-config";
-import { link } from "fs";
+import Navbar from "@/components/Navbar";
 
 export default async function Home({
   params: { lang },
@@ -54,7 +53,8 @@ export default async function Home({
   return (
     <>
       <main className="flex min-h-screen flex-col items-center justify-between p-4">
-        <section id="hero" className="flex flex-row py-16 h-screen">
+        <section id="hero" className="flex flex-col pb-16 h-screen">
+          <Navbar lang={lang} />
           <div className="flex flex-col gap-8 mt-auto">
             <h1 className="text-primary font-bold text-5xl">
               Atas Lapenas <br />-{" "}

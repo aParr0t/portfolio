@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { Inter, Space_Mono, Pacifico } from "next/font/google";
 import "@/app/globals.css";
-import { i18n, type Locale } from "../../i18n-config";
+import { i18n } from "../../i18n-config";
 import { Toaster } from "@/components/ui/toaster";
 
 export async function generateStaticParams() {
-  return i18n.locales.map((locale) => ({ lang: locale }));
+  return i18n.locales.map((locale) => ({ lang: locale.code }));
 }
 
 const inter = Inter({ subsets: ["latin"] });
@@ -30,7 +30,7 @@ export default function RootLayout({
   params,
 }: Readonly<{
   children: React.ReactNode;
-  params: { lang: Locale };
+  params: { lang: string };
 }>) {
   return (
     <html lang={params.lang}>

@@ -11,7 +11,7 @@ function getLocale(request: NextRequest): string | undefined {
   request.headers.forEach((value, key) => (negotiatorHeaders[key] = value));
 
   // @ts-ignore locales are readonly
-  const locales: string[] = i18n.locales;
+  const locales: string[] = i18n.locales.map((locale) => locale.code);
 
   // Use negotiator and intl-localematcher to get best locale
   let languages = new Negotiator({ headers: negotiatorHeaders }).languages(
@@ -26,16 +26,19 @@ function getLocale(request: NextRequest): string | undefined {
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
-  // prevent static files from being redirected to a locale
+  // prevent static files from being redirected to la locale
   let staticPaths = ["/manifest.json", "/favicon.ico", "/static/"];
   if (staticPaths.some((file) => pathname.startsWith(file))) {
     return;
   }
 
   // Check if there is any supported locale in the pathname
-  const pathnameIsMissingLocale = i18n.locales.every(
-    (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
-  );
+  const pathnameIsMissingLocale = i18n.locales
+    .map((locale) => locale.code)
+    .every(
+      (locale) =>
+        !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
+    );
 
   // Redirect if there is no locale
   if (pathnameIsMissingLocale) {

@@ -3,11 +3,24 @@ import { match } from "@formatjs/intl-localematcher";
 
 export const i18n = {
   defaultLocale: "en",
-  locales: ["en", "no"],
+  locales: [
+    {
+      code: "en",
+      nativeName: "English",
+    },
+    {
+      code: "no",
+      nativeName: "Norsk",
+    },
+  ],
 } as const;
 
 export function matchLocale(languages: string[]) {
-  return match(languages, i18n.locales, i18n.defaultLocale);
+  return match(
+    languages,
+    i18n.locales.map((locale) => locale.code),
+    i18n.defaultLocale
+  );
 }
 
-export type Locale = (typeof i18n)["locales"][number];
+export type Locale = (typeof i18n)["locales"][number]["code"];

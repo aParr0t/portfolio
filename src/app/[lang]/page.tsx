@@ -110,7 +110,7 @@ export default async function Home({
             ))}
           </div>
           <Link
-            href={`/static/docs/resume-${resumeLang}.pdf`}
+            href={`/static/docs/resume.pdf`}
             target="_blank"
             className="text-secondary text-md flex flex-row self-center items-center gap-2 mt-4"
           >
